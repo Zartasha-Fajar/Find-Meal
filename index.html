@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Meal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #1e1e2f;
+      margin-top: 100px;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      height: max-content;
+    }
+
+    .container {
+      text-align: center;
+      background: #2a2a40;
+      padding: 50px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 90%;
+      color: #fff;
+    }
+
+    h1 {
+      color: #ffcc00;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    #search {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #ffcc00;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      background: #1e1e2f;
+      color: white;
+      min-width: 200px;
+    }
+
+    #search:focus {
+      border-color: #ff9900;
+      box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+    }
+
+    .search-btn,
+    .random-btn {
+      background: linear-gradient(135deg, #ffcc00, #ff9900);
+      color: #1e1e2f;
+      border: none;
+      padding: 12px 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .search-btn:hover,
+    .random-btn:hover {
+      background: linear-gradient(135deg, #ff9900, #ff6600);
+      transform: translateY(-2px);
+    }
+
+    .random-btn {
+      background: linear-gradient(135deg, #00ccff, #0099ff);
+      color: white;
+      margin-top: 5%;
+    }
+
+    .random-btn:hover {
+      background: linear-gradient(135deg, #0099ff, #0066cc);
+    }
+
+    .meals {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .meal {
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+    }
+
+    .meal img {
+      width: 100%;
+      height: auto;
+      border: 4px #fff solid;
+      border-radius: 2px;
+    }
+
+    .meal-info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: 0.2s;
+    }
+
+    .meal:hover .meal-info {
+      opacity: 1;
+    }
+
+    .single-meal {
+      margin: 30px auto;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    .single-meal img {
+      width: 100%;
+      max-width: 300px;
+      margin: 15px;
+      border: 4px #fff solid;
+      border-radius: 2px;
+    }
+
+    .single-meal-info {
+      margin: 20px;
+      padding: 10px;
+      border: 2px #e09850 dashed;
+      border-radius: 5px;
+    }
+
+    .single-meal p {
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .single-meal ul {
+      padding-left: 0;
+      list-style-type: none;
+    }
+
+    .single-meal ul li {
+      border: 1px solid #ededed;
+      border-radius: 5px;
+      background-color: #fff;
+      display: inline-block;
+      color: #2d2013;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 5px;
+      margin: 0 5px 5px 0;
+    }
+
+    /* Media Query */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      #search {
+        font-size: 14px;
+      }
+
+      .search-btn,
+      .random-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+      }
+
+      .meal-info h3 {
+        font-size: 14px;
+      }
+
+      .single-meal img {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Meal Finder</h1>
+    <div class="flex">
+      <form class="flex" id="submit">
+        <input type="text" id="search" placeholder="Search for meals or keywords" />
+        <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
+    </form>
+    <button class="random-btn" id="random">Random Meals</button>
+    </div>
+
+    <div id="result-heading"></div>
+    <div id="meals" class="meals"></div>
+    <div id="single-meal"></div>
+  </div>
+
+  <script>
+    const search = document.querySelector("#search"),
+      submit = document.querySelector("#submit"),
+      random = document.querySelector("#random"),
+      mealsEle = document.querySelector("#meals"),
+      resultHeading = document.querySelector("#result-heading"),
+      singleMealEle = document.querySelector("#single-meal");
+
+    submit.addEventListener("submit", searchItem);
+    random.addEventListener("click", randomItem);
+
+    function searchItem(e) {
+      e.preventDefault();
+      singleMealEle.innerHTML = "";
+      mealsEle.innerHTML = "";
+
+      const term = search.value.trim();
+
+      if (term) {
+        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
+          .then(res => res.json())
+          .then(data => {
+            resultHeading.innerHTML = `<h2>Search Result for "${term}"</h2>`;
+
+            if (!data.meals) {
+              resultHeading.innerHTML = "<p>No results found. Try another keyword!</p>";
+              return;
+            }
+
+            mealsEle.innerHTML = data.meals.map(meal => `
+              <div class="meal">
+                <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
+                <div class="meal-info" data-mealid="${meal.idMeal}">
+                  <h3>${meal.strMeal}</h3>
+                </div>
+              </div>
+            `).join('');
+          })
+          .catch(err => {
+            console.error("Fetch error:", err);
+            resultHeading.innerHTML = "<p>Something went wrong. Please try again later.</p>";
+          });
+
+        search.value = "";
+      } else {
+        alert("Please enter a search term");
+      }
+    }
+
+    function randomItem() {
+      mealsEle.innerHTML = "";
+      resultHeading.innerHTML = "";
+
+      fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+        .then(res => res.json())
+        .then(data => {
+          const meal = data.meals[0];
+          addMealtoDisplay(meal);
+        });
+    }
+
+    function getMealById(id) {
+      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+        .then(res => res.json())
+        .then(data => {
+          const meal = data.meals[0];
+          addMealtoDisplay(meal);
+        });
+    }
+
+    mealsEle.addEventListener("click", e => {
+      const mealInfo = e.composedPath().find(item => item.classList?.contains('meal-info'));
+      if (mealInfo) {
+        const mealID = mealInfo.getAttribute("data-mealid");
+        getMealById(mealID);
+      }
+    });
+
+    function addMealtoDisplay(meal) {
+      const ingredients = [];
+
+      for (let i = 1; i <= 20; i++) {
+        if (meal[`strIngredient${i}`]) {
+          ingredients.push(`${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`);
+        } else {
+          break;
+        }
+      }
+
+      singleMealEle.innerHTML = `
+        <div class="single-meal">
+          <h1>${meal.strMeal}</h1>
+          <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
+          <div class="single-meal-info">
+            ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ''}
+            ${meal.strArea ? `<p>${meal.strArea}</p>` : ''}
+          </div>
+          <div class="main">
+            <p>${meal.strInstructions}</p>
+            <h2>Ingredients</h2>
+            <ul>
+              ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+
+</html>
